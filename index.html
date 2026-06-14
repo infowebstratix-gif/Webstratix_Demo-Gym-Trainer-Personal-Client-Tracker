@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FitTrack Pro - Personal Trainer & Client Management System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    
+    <style>
+        :root {
+            --primary-color: #0d6efd;
+            --secondary-color: #0dcaf0;
+            --dark-navy: #0a192f;
+            --accent-orange: #ff6b6b;
+            --light-bg: #f8f9fa;
+            --text-dark: #212529;
+            --text-muted: #6c757d;
+            --success-green: #198754;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #ffffff;
+            color: var(--text-dark);
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        /* Navbar Styling */
+        .navbar {
+            background-color: rgba(255, 255, 255, 0.95) !important;
+            backdrop-filter: blur(10px);
+            transition: all 0.4s ease;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+        .navbar-brand {
+            font-weight: 800;
+            font-size: 1.6rem;
+            letter-spacing: -0.5px;
+        }
+        .navbar-brand span {
+            color: var(--primary-color);
+        }
+        .nav-link {
+            font-weight: 500;
+            color: var(--text-dark) !important;
+            padding: 0.5rem 1.2rem !important;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        .nav-link:after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            display: block;
+            margin-top: 2px;
+            right: 0;
+            background: var(--primary-color);
+            transition: width 0.3s ease, right 0.3s ease;
+        }
+        .nav-link:hover:after {
+            width: 100%;
+            right: 0;
+        }
+        .nav-link:hover {
+            color: var(--primary-color) !important;
+        }
+
+        /* Hero Carousel Styling */
+        .hero-carousel .carousel-item {
+            height: 85vh;
+            min-height: 500px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+        .hero-carousel .carousel-item::before {
+            content: '';
+            position: absolute;
+            top:0; left:0; right:0; bottom:0;
+            background: linear-gradient(to right, rgba(255,255,255,0.95), rgba(255,255,255,0.4));
+            z-index: 1;
+        }
+        .carousel-content {
+            position: relative;
+            z-index: 2;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            max-width: 650px;
+        }
+        .carousel-content h1 {
+            font-size: 3.8rem;
+            font-weight: 800;
+            line-height: 1.2;
+            color: var(--dark-navy);
+            margin-bottom: 1.5rem;
+        }
+        .carousel-content h1 span {
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .carousel-content p {
+            font-size: 1.15rem;
+            color: #4a5568;
+            margin-bottom: 2rem;
+            line-height: 1.7;
+        }
+
+        /* Section Universal Headings */
+        .section-padding {
+            padding: 80px 0;
+        }
+        .section-title {
+            font-weight: 800;
+            font-size: 2.5rem;
+            color: var(--dark-navy);
+            position: relative;
+            margin-bottom: 15px;
+        }
+        .section-title span {
+            color: var(--primary-color);
+        }
+        .section-subtitle {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto 50px auto;
+        }
+
+        /* Feature / Dashboard Grid Cards */
+        .feature-card {
+            background: #ffffff;
+            border: 1px solid rgba(0,0,0,0.06);
+            border-radius: 16px;
+            padding: 30px;
+            transition: all 0.4s ease;
+            height: 100%;
+        }
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(13, 110, 253, 0.08);
+            border-color: rgba(13, 110, 253, 0.2);
+        }
+        .icon-box {
+            width: 65px;
+            height: 65px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            margin-bottom: 22px;
+            transition: all 0.3s ease;
+        }
+        .bg-primary-light { background-color: rgba(13, 110, 253, 0.1); color: var(--primary-color); }
+        .bg-info-light { background-color: rgba(13, 202, 240, 0.15); color: #0aa2c0; }
+        .bg-success-light { background-color: rgba(25, 135, 84, 0.1); color: var(--success-green); }
+
+        /* Tracker Interactive System UI */
+        .tracker-window {
+            background: #ffffff;
+            border-radius: 24px;
+            box-shadow: 0 15px 50px rgba(0,0,0,0.05);
+            border: 1px solid rgba(0,0,0,0.03);
+            overflow: hidden;
+        }
+        .tracker-sidebar {
+            background-color: var(--light-bg);
+            border-right: 1px solid rgba(0,0,0,0.05);
+            padding: 30px;
+        }
+        .client-item {
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+            background: #ffffff;
+        }
+        .client-item:hover, .client-item.active {
+            background: var(--primary-color);
+            color: #ffffff !important;
+            transform: scale(1.02);
+        }
+        .client-item:hover .text-muted, .client-item.active .text-muted {
+            color: rgba(255,255,255,0.8) !important;
+        }
+
+        /* Badges & Progress */
+        .routine-tag {
+            background: rgba(13, 110, 253, 0.08);
+            color: var(--primary-color);
+            padding: 6px 14px;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: inline-block;
+            margin-right: 8px;
+            margin-bottom: 8px;
+        }
+        .diet-card {
+            background: var(--light-bg);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-left: 4px solid var(--success-green);
+        }
+
+        /* Premium Large Footer */
+        footer {
+            background-color: var(--dark-navy);
+            color: #ffffff;
+            padding: 80px 0 30px 0;
+            font-size: 0.95rem;
+        }
+        footer h5 {
+            font-weight: 700;
+            margin-bottom: 25px;
+            position: relative;
+            color: #ffffff;
+        }
+        footer h5::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -8px;
+            width: 40px;
+            height: 2px;
+            background-color: var(--primary-color);
+        }
+        footer p {
+            color: #a0aec0;
+            line-height: 1.8;
+        }
+        footer a {
+            color: #a0aec0;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        footer a:hover {
+            color: var(--secondary-color);
+            padding-left: 5px;
+        }
+        .footer-social-icons a {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.05);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+            color: #ffffff;
+            transition: all 0.3s ease;
+        }
+        .footer-social-icons a:hover {
+            background: var(--primary-color);
+            color: #ffffff;
+            transform: translateY(-5px);
+            padding-left: 0;
+        }
+        .map-container iframe {
+            border-radius: 12px;
+            width: 100%;
+            height: 180px;
+            border: none;
+        }
+
+        /* Responsive Fixes */
+        @media (max-width: 991px) {
+            .hero-carousel .carousel-item { height: 70vh; }
+            .carousel-content h1 { font-size: 2.5rem; }
+            .tracker-sidebar { border-right: none; border-bottom: 1px solid rgba(0,0,0,0.05); }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top shadow-sm">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="fa-solid fa-dumbbell text-primary me-2"></i><span>FitTrack</span> Pro
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="mainNavbar">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <li class="nav-item"><a class="nav-link" href="#home">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#features">Core Features</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#dashboard">Trainer Console</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#diet-builder">Nutrition Engine</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#contact">Contact Support</a></li>
+                </ul>
+                <a href="#dashboard" class="btn btn-primary ms-lg-3 px-4 rounded-pill fw-medium shadow-sm">Launch Console</a>
+            </div>
+        </div>
+    </nav>
+
+    <section id="home" class="hero-carousel">
+        <div id="heroSlider" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="5000">
+            <div class="carousel-indicators">
+                <button type="button" data-bs-target="#heroSlider" data-bs-slide-to="0" class="active"></button>
+                <button type="button" data-bs-target="#heroSlider" data-bs-slide-to="1"></button>
+                <button type="button" data-bs-target="#heroSlider" data-bs-slide-to="2"></button>
+            </div>
+            <div class="carousel-inner">
+                <div class="carousel-item active" style="background-image: url('https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?q=80&w=2070&auto=format&fit=crop');">
+                    <div class="container h-100">
+                        <div class="carousel-content animate__animated animate__fadeInLeft">
+                            <span class="badge bg-primary px-3 py-2 rounded-pill mb-3 text-uppercase">Smart Coaching Suite</span>
+                            <h1>Track Client <span>Slots & Routines</span> Instantly</h1>
+                            <p>Automate your complete personal training business. Design advanced hypertrophy routines, allocate precise hourly slots, and assign macro-calculated meal architectures seamlessly.</p>
+                            <div>
+                                <a href="#dashboard" class="btn btn-primary btn-lg px-4 me-3 rounded-pill shadow">Manage Clients</a>
+                                <a href="#features" class="btn btn-outline-dark btn-lg px-4 rounded-pill">Learn More</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item" style="background-image: url('https://images.unsplash.com/photo-1517838277536-f5f99be501cd?q=80&w=2070&auto=format&fit=crop');">
+                    <div class="container h-100">
+                        <div class="carousel-content">
+                            <span class="badge bg-info text-dark px-3 py-2 rounded-pill mb-3 text-uppercase">Precision Nutrition</span>
+                            <h1>Customized <span>Protein Diet</span> Allocations</h1>
+                            <p>Formulate target calorie goals and precise high-protein macronutrient breakdowns adjusted according to each client's lean mass coefficient and fitness goal metrics.</p>
+                            <div>
+                                <a href="#diet-builder" class="btn btn-info btn-lg px-4 me-3 rounded-pill text-dark shadow">Configure Macros</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item" style="background-image: url('https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?q=80&w=2069&auto=format&fit=crop');">
+                    <div class="container h-100">
+                        <div class="carousel-content">
+                            <span class="badge bg-success px-3 py-2 rounded-pill mb-3 text-uppercase">Maximize Yield</span>
+                            <h1>Zero <span>Overlapping Slots</span>. Total Control.</h1>
+                            <p>Optimize your hourly training capacity. Our scheduling guardrails prevent booking conflicts, ensuring every fitness enthusiast gets undivided professional guidance.</p>
+                            <div>
+                                <a href="#dashboard" class="btn btn-success btn-lg px-4 me-3 rounded-pill shadow">Book Slots Now</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#heroSlider" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon bg-dark rounded-circle p-3"></span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#heroSlider" data-bs-slide="next">
+                <span class="carousel-control-next-icon bg-dark rounded-circle p-3"></span>
+            </button>
+        </div>
+    </section>
+
+    <section id="features" class="section-padding bg-light">
+        <div class="container text-center">
+            <h2 class="section-title">The Blueprint for <span>Elite Performance</span></h2>
+            <p class="section-subtitle">Everything a personal trainer needs to run an efficient, results-driven studio platform without manual spreadsheets.</p>
+            
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="feature-card text-start">
+                        <div class="icon-box bg-primary-light">
+                            <i class="fa-solid fa-calendar-check"></i>
+                        </div>
+                        <h4 class="fw-bold text-dark">Slot Management</h4>
+                        <p class="text-muted">Allocate premium hours, view ongoing sessions, and completely eliminate scheduling overlaps across client routines.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-card text-start">
+                        <div class="icon-box bg-info-light">
+                            <i class="fa-solid fa-cubes-stacked"></i>
+                        </div>
+                        <h4 class="fw-bold text-dark">Routine Architect</h4>
+                        <p class="text-muted">Build periodized workout matrices, define exact reps, sets, target muscle groupings, and RPE effort guidelines.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-card text-start">
+                        <div class="icon-box bg-success-light">
+                            <i class="fa-solid fa-egg"></i>
+                        </div>
+                        <h4 class="fw-bold text-dark">Protein Engine</h4>
+                        <p class="text-muted">Automated calculation parameters to distribute targeted protein goals based on lean muscular progression milestones.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="dashboard" class="section-padding">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="section-title">Trainer <span>Management Console</span></h2>
+                <p class="section-subtitle">Select a premium client profile below to modify ongoing slot records, fitness goals, exercises, and custom daily diets.</p>
+            </div>
+
+            <div class="tracker-window row g-0">
+                <div class="col-lg-4 tracker-sidebar">
+                    <h5 class="fw-bold mb-4 text-dark"><i class="fa-solid fa-users text-primary me-2"></i>Active Clients</h5>
+                    <div id="clientList">
+                        </div>
+                    
+                    <hr class="my-4">
+                    <h6 class="fw-bold mb-3">Onboard New Client</h6>
+                    <form id="newClientForm" class="row g-2">
+                        <div class="col-12">
+                            <input type="text" id="newClientName" class="form-control form-control-sm" placeholder="Full Name" required>
+                        </div>
+                        <div class="col-12">
+                            <input type="text" id="newClientGoal" class="form-control form-control-sm" placeholder="Primary Goal (e.g., Lean Bulk)" required>
+                        </div>
+                        <div class="col-12">
+                            <button type="submit" class="btn btn-primary btn-sm w-100 rounded-pill mt-1">Add Client Profile</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="col-lg-8 p-4 p-md-5">
+                    <div id="activeClientDetails">
+                        </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="diet-builder" class="section-padding bg-light">
+        <div class="container">
+            <div class="row align-items-center g-5">
+                <div class="col-lg-6">
+                    <span class="badge bg-success px-3 py-2 rounded-pill mb-3 text-uppercase">Macro Calculation Suite</span>
+                    <h2 class="fw-bold text-dark mb-4">Precision High Protein Diet Planner Matrix</h2>
+                    <p class="text-muted mb-4">Calculate recommended macros effortlessly based on lean targets. Proper protein optimization ensures your personal gym clients retain nitrogen balances efficiently throughout severe caloric deficits or muscle gains.</p>
+                    
+                    <div class="row g-3">
+                        <div class="col-sm-6">
+                            <div class="p-3 bg-white border rounded-3 shadow-sm d-flex align-items-center">
+                                <i class="fa-solid fa-circle-check text-success fs-3 me-3"></i>
+                                <div>
+                                    <h6 class="fw-bold mb-0">Whey Optimization</h6>
+                                    <small class="text-muted">Post-Workout</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="p-3 bg-white border rounded-3 shadow-sm d-flex align-items-center">
+                                <i class="fa-solid fa-circle-check text-success fs-3 me-3"></i>
+                                <div>
+                                    <h6 class="fw-bold mb-0">Lean Amino Ratios</h6>
+                                    <small class="text-muted">Sustained Growth</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-6">
+                    <div class="card border-0 shadow-lg p-4 p-sm-5 rounded-4 bg-white">
+                        <h4 class="fw-bold text-dark mb-4 text-center">Interactive Macro Gauge</h4>
+                        <div class="mb-3">
+                            <label class="form-label fw-medium">Select Client Profile</label>
+                            <select class="form-select" id="macroClientSelect">
+                                <option value="0">Sarah Jenkins</option>
+                                <option value="1">Alex Rivera</option>
+                                <option value="2">Michael Chen</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-medium">Adjust Target Protein Multiplier (g/kg)</label>
+                            <input type="range" class="form-range" min="1.6" max="2.4" step="0.1" id="proteinRange" value="2.0">
+                            <div class="d-flex justify-content-between text-muted small mt-1">
+                                <span>1.6g (Maintenance)</span>
+                                <span class="fw-bold text-primary" id="proteinRangeValue">2.0g/kg</span>
+                                <span>2.4g (Elite Hypertrophy)</span>
+                            </div>
+                        </div>
+                        
+                        <div class="p-3 bg-light rounded-3 mt-4 text-center">
+                            <span class="text-muted d-block small mb-1">Recommended Daily Allocation Target</span>
+                            <h2 class="fw-bold text-success mb-0" id="calculatedProteinTarget">140 grams / Day</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer id="contact">
+        <div class="container">
+            <div class="row g-4 mb-5">
+                <div class="col-lg-4">
+                    <h5 class="text-white">FitTrack Pro Studio</h5>
+                    <p class="mt-3">The premium software engine helping personal fitness professionals manage routines, custom dietary calendars, and global client availability matrices effectively.</p>
+                    <div class="footer-social-icons mt-4">
+                        <a href="https://facebook.com" target="_blank"><i class="fa-brands fa-facebook-f"></i></a>
+                        <a href="https://linkedin.com" target="_blank"><i class="fa-brands fa-linkedin-in"></i></a>
+                        <a href="https://github.com" target="_blank"><i class="fa-brands fa-github"></i></a>
+                        <a href="https://instagram.com" target="_blank"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="https://twitter.com" target="_blank"><i class="fa-brands fa-x-twitter"></i></a>
+                    </div>
+                </div>
+                
+                <div class="col-md-6 col-lg-4">
+                    <h5 class="text-white">Quick Navigation Links</h5>
+                    <div class="row mt-3">
+                        <div class="col-6">
+                            <ul class="list-unstyled">
+                                <li class="mb-2"><a href="#home">Home</a></li>
+                                <li class="mb-2"><a href="#features">Core Features</a></li>
+                                <li class="mb-2"><a href="#dashboard">Trainer Console</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-6">
+                            <ul class="list-unstyled">
+                                <li class="mb-2"><a href="#diet-builder">Nutrition Engine</a></li>
+                                <li class="mb-2"><a href="#">Privacy Policy</a></li>
+                                <li class="mb-2"><a href="#">Terms & Conditions</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6 col-lg-4">
+                    <h5 class="text-white">Global Gym Headquarters</h5>
+                    <p class="mt-3 mb-3"><i class="fa-solid fa-location-dot text-primary me-2"></i> 742 Performance Way, Elite District, NY</p>
+                    <div class="map-container">
+                        <iframe src="https://maps.google.com/maps?q=new%20york&t=&z=13&ie=UTF8&iwloc=&output=embed" allowfullscreen="" loading="lazy"></iframe>
+                    </div>
+                </div>
+            </div>
+            
+            <hr style="border-color: rgba(255,255,255,0.1);">
+            <div class="row align-items-center mt-4">
+                <div class="col-md-6 text-center text-md-start">
+                    <p class="mb-0 small">© 2026 FitTrack Pro Ecosystem. All rights reserved.</p>
+                </div>
+                <div class="col-md-6 text-center text-md-end">
+                    <p class="mb-0 small text-white-50">Designed exclusively for high-tier fitness personal trainers.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // Core Client Dataset Matrix
+        const clientDataset = [
+            {
+                id: 0,
+                name: "Sarah Jenkins",
+                goal: "Fat Loss & Endurance",
+                weight: 70, // in kg
+                currentSlot: "08:00 AM - 09:00 AM",
+                routine: [
+                    { day: "Mon/Wed/Fri", exercise: "Barbell Squats", sets: 4, reps: "10-12", rpe: 8 },
+                    { day: "Mon/Wed/Fri", exercise: "Dumbbell Shoulder Press", sets: 3, reps: "12", rpe: 7 },
+                    { day: "Tue/Thu", exercise: "HIIT Rowing Circuits", sets: 5, reps: "2 Mins", rpe: 9 }
+                ],
+                diet: [
+                    { meal: "Breakfast", items: "Egg Whites, Oatmeal, Handful of Almonds", protein: 32 },
+                    { meal: "Post Workout", items: "1 Scoop Whey Isolate, 1 Large Banana", protein: 26 },
+                    { meal: "Dinner", items: "Baked Salmon Fillet, Quinoa, Steamed Asparagus", protein: 42 }
+                ]
+            },
+            {
+                id: 1,
+                name: "Alex Rivera",
+                goal: "Hypertrophy & Strength",
+                weight: 85,
+                currentSlot: "10:30 AM - 11:30 AM",
+                routine: [
+                    { day: "Push Day", exercise: "Incline Bench Press", sets: 4, reps: "6-8", rpe: 9 },
+                    { day: "Pull Day", exercise: "Weighted Pullups", sets: 4, reps: "8", rpe: 8 },
+                    { day: "Leg Day", exercise: "Romanian Deadlifts", sets: 3, reps: "10", rpe: 8 }
+                ],
+                diet: [
+                    { meal: "Meal 1", items: "4 Whole Eggs, 2 Slices Whole Wheat Toast", protein: 30 },
+                    { meal: "Meal 2", items: "Grilled Chicken Breast, Jasmine Rice, Broccoli", protein: 50 },
+                    { meal: "Meal 3", items: "Cottage Cheese, Casein Blend Shake before bed", protein: 40 }
+                ]
+            },
+            {
+                id: 2,
+                name: "Michael Chen",
+                goal: "Lean Bulking Strategy",
+                weight: 75,
+                currentSlot: "04:00 PM - 05:00 PM",
+                routine: [
+                    { day: "Upper A", exercise: "Overhead Barbell Press", sets: 4, reps: "8", rpe: 8.5 },
+                    { day: "Lower A", exercise: "Leg Press Matrix", sets: 4, reps: "12-15", rpe: 8 },
+                    { day: "Arms/Core", exercise: "Incline Dumbbell Curls", sets: 3, reps: "12", rpe: 9 }
+                ],
+                diet: [
+                    { meal: "Breakfast", items: "Oatmeal blended with Peanut Butter & Whey", protein: 45 },
+                    { meal: "Lunch", items: "Lean Ground Beef, Sweet Potato Mash", protein: 48 },
+                    { meal: "Snack", items: "Greek Yogurt with Mixed Berries", protein: 24 }
+                ]
+            }
+        ];
+
+        let selectedClientId = 0;
+
+        function initApp() {
+            renderClientList();
+            renderActiveClientDetails();
+            updateMacroCalculator();
+            setupEventListeners();
+        }
+
+        // Render Sidebar Active Members
+        function renderClientList() {
+            const listContainer = document.getElementById('clientList');
+            listContainer.innerHTML = '';
+            
+            clientDataset.forEach(client => {
+                const item = document.createElement('div');
+                item.className = `client-item shadow-sm d-flex align-items-center ${client.id === selectedClientId ? 'active' : ''}`;
+                item.onclick = () => {
+                    selectedClientId = client.id;
+                    renderClientList();
+                    renderActiveClientDetails();
+                    document.getElementById('macroClientSelect').value = selectedClientId;
+                    updateMacroCalculator();
+                };
+                
+                item.innerHTML = `
+                    <div class="flex-grow-1">
+                        <h6 class="fw-bold mb-1">${client.name}</h6>
+                        <small class="text-muted d-block"><i class="fa-solid fa-bullseye me-1"></i>${client.goal}</small>
+                        <small class="text-muted d-block"><i class="fa-solid fa-clock me-1"></i>${client.currentSlot}</small>
+                    </div>
+                `;
+                listContainer.appendChild(item);
+            });
+        }
+
+        // Render Active Panel Profile Details
+        function renderActiveClientDetails() {
+            const container = document.getElementById('activeClientDetails');
+            const client = clientDataset.find(c => c.id === selectedClientId);
+            
+            if (!client) return;
+
+            let routineHTML = '';
+            client.routine.forEach(r => {
+                routineHTML += `
+                    <tr>
+                        <td><span class="badge bg-secondary">${r.day}</span></td>
+                        <td class="fw-bold">${r.exercise}</td>
+                        <td><span class="badge bg-primary">${r.sets} x ${r.reps}</span></td>
+                        <td><span class="text-danger fw-bold">@ RPE ${r.rpe}</span></td>
+                    </tr>
+                `;
+            });
+
+            let dietHTML = '';
+            let totalProtein = 0;
+            client.diet.forEach(d => {
+                totalProtein += d.protein;
+                dietHTML += `
+                    <div class="diet-card d-flex justify-content-between align-items-center">
+                        <div>
+                            <strong class="text-dark d-block">${d.meal}</strong>
+                            <span class="text-muted small">${d.items}</span>
+                        </div>
+                        <span class="badge bg-success">${d.protein}g Protein</span>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = `
+                <div class="d-md-flex justify-content-between align-items-start mb-4 animate__animated animate__fadeIn">
+                    <div>
+                        <h3 class="fw-bold text-dark mb-1">${client.name}</h3>
+                        <p class="text-muted mb-0">Goal Focus: <strong class="text-primary">${client.goal}</strong> | Weight: <strong>${client.weight}kg</strong></p>
+                    </div>
+                    <div class="mt-3 mt-md-0">
+                        <span class="badge bg-dark px-3 py-2 fs-6 rounded-pill"><i class="fa-solid fa-user-clock me-2 text-warning"></i>Slot: ${client.currentSlot}</span>
+                    </div>
+                </div>
+
+                <ul class="nav nav-tabs mb-4" id="clientTab" role="tablist">
+                    <li class="nav-item">
+                        <button class="nav-link active" id="workout-tab" data-bs-toggle="tab" data-bs-target="#workout-panel" type="button"><i class="fa-solid fa-dumbbell me-2"></i>Workout Routine</button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="nav-link" id="diet-tab" data-bs-toggle="tab" data-bs-target="#diet-panel" type="button"><i class="fa-solid fa-egg me-2"></i>Diet Chart Layout</button>
+                    </li>
+                </ul>
+
+                <div class="tab-content" id="clientTabContent">
+                    <div class="tab-pane fade show active" id="workout-panel">
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Frequency</th>
+                                        <th>Exercise</th>
+                                        <th>Sets x Reps</th>
+                                        <th>Intensity</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${routineHTML}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="tab-pane fade" id="diet-panel">
+                        <h5 class="fw-bold text-dark mb-3">Assigned Meal Plan</h5>
+                        ${dietHTML}
+                        <div class="p-3 bg-primary-light text-primary rounded-3 mt-3 d-flex justify-content-between align-items-center">
+                            <span class="fw-bold">Total Assigned Diet Protein:</span>
+                            <span class="fs-5 fw-bold">${totalProtein} Grams</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Live Calculator Computation Logic
+        function updateMacroCalculator() {
+            const clientSelect = document.getElementById('macroClientSelect');
+            const proteinRange = document.getElementById('proteinRange');
+            const rangeValueDisplay = document.getElementById('proteinRangeValue');
+            const targetDisplay = document.getElementById('calculatedProteinTarget');
+
+            const selectedId = parseInt(clientSelect.value);
+            const client = clientDataset.find(c => c.id === selectedId);
+            const multiplier = parseFloat(proteinRange.value);
+
+            if (client) {
+                rangeValueDisplay.textContent = `${multiplier.toFixed(1)}g/kg`;
+                const calculatedGrams = Math.round(client.weight * multiplier);
+                targetDisplay.textContent = `${calculatedGrams} grams / Day`;
+            }
+        }
+
+        // System Form Listeners
+        function setupEventListeners() {
+            document.getElementById('newClientForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const nameInput = document.getElementById('newClientName');
+                const goalInput = document.getElementById('newClientGoal');
+
+                const newClient = {
+                    id: clientDataset.length,
+                    name: nameInput.value,
+                    goal: goalInput.value,
+                    weight: 78, 
+                    currentSlot: "06:00 PM - 07:00 PM",
+                    routine: [
+                        { day: "Mon/Wed/Fri", exercise: "Compound Squats / Bench Base", sets: 3, reps: "10", rpe: 8 }
+                    ],
+                    diet: [
+                        { meal: "All Day Scale", items: "Balanced Muscle Feed Custom Layout", protein: 140 }
+                    ]
+                };
+
+                clientDataset.push(newClient);
+                
+                const select = document.getElementById('macroClientSelect');
+                const option = document.createElement('option');
+                option.value = newClient.id;
+                option.textContent = newClient.name;
+                select.appendChild(option);
+
+                selectedClientId = newClient.id;
+                nameInput.value = '';
+                goalInput.value = '';
+
+                renderClientList();
+                renderActiveClientDetails();
+                alert("Success: New Trainer Client Profile Created!");
+            });
+
+            document.getElementById('proteinRange').addEventListener('input', updateMacroCalculator);
+            document.getElementById('macroClientSelect').addEventListener('change', function() {
+                selectedClientId = parseInt(this.value);
+                renderClientList();
+                renderActiveClientDetails();
+                updateMacroCalculator();
+            });
+        }
+
+        window.onload = initApp;
+    </script>
+</body>
+</html>
